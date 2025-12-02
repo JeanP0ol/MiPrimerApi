@@ -35,12 +35,12 @@ namespace Api.W.Movies.Services
         public async Task<MovieDto> CreateMovieAsync(MovieCreateUpdateDto dto)
         {
             var movie = _mapper.Map<Movie>(dto);
-            var created = await _movieRepository.CreateMovieAsync(movie);
 
-            if (!created)
+            var savedMovie = await _movieRepository.CreateMovieAsync(movie);
+            if (savedMovie == null)
                 throw new Exception("Ocurrió un error al crear la película.");
 
-            return _mapper.Map<MovieDto>(movie);
+            return _mapper.Map<MovieDto>(savedMovie);
         }
 
         public async Task<MovieDto> UpdateMovieAsync(MovieCreateUpdateDto dto, int id)

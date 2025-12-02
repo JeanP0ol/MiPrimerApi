@@ -1,5 +1,5 @@
-﻿using MiPrimerApi.DAL.Models;
-using Api.W.Movies.DAL;
+﻿using Api.W.Movies.DAL;
+using MiPrimerApi.DAL.Models;
 using Api.W.Movies.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,31 +16,25 @@ namespace Api.W.Movies.Repository
 
         public async Task<ICollection<Movie>> GetMoviesAsync()
         {
-            return await _context.Movies
-                .AsNoTracking()
-                .OrderBy(m => m.Name)
-                .ToListAsync();
+            return await _context.Movies.ToListAsync();
         }
 
         public async Task<Movie?> GetMovieAsync(int id)
         {
-            return await _context.Movies
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task<bool> CreateMovieAsync(Movie movie)
+        public async Task<Movie?> CreateMovieAsync(Movie movie)
         {
-            movie.CreatedDate = DateTime.UtcNow;
             await _context.Movies.AddAsync(movie);
-            return await SaveAsync();
+            await _context.SaveChangesAsync();
+            return movie;
         }
 
         public async Task<bool> UpdateMovieAsync(Movie movie)
         {
-            movie.ModifiedDate = DateTime.UtcNow;
             _context.Movies.Update(movie);
-            return await SaveAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> DeleteMovieAsync(int id)
@@ -49,14 +43,7 @@ namespace Api.W.Movies.Repository
             if (movie == null) return false;
 
             _context.Movies.Remove(movie);
-            return await SaveAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
-
-        private async Task<bool> SaveAsync()
-        {
-            return await _context.SaveChangesAsync() >= 0;
-        }
-      
-
     }
 }

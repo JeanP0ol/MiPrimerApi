@@ -6,7 +6,7 @@ namespace Api.W.Movies.Repository.IRepository
     {
         Task<ICollection<Movie>> GetMoviesAsync();
         Task<Movie?> GetMovieAsync(int id);
-        Task<bool> CreateMovieAsync(Movie movie);
+        Task<Movie?> CreateMovieAsync(Movie movie); // ← corregido: devuelve Movie
         Task<bool> UpdateMovieAsync(Movie movie);
         Task<bool> DeleteMovieAsync(int id);
     }

@@ -42,6 +42,11 @@ namespace Api.W.Movies.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var created = await _movieService.CreateMovieAsync(dto);
+
+            // Validación para evitar error si el ID no se genera correctamente
+            if (created == null || created.Id == 0)
+                return Ok(created);
+
             return CreatedAtAction(nameof(GetMovieAsync), new { id = created.Id }, created);
         }
 
@@ -76,3 +81,4 @@ namespace Api.W.Movies.Controllers
         }
     }
 }
+

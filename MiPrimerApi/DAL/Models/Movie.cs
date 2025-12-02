@@ -1,4 +1,10 @@
-﻿namespace MiPrimerApi.DAL.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+
+namespace MiPrimerApi.DAL.Models
+
+
 {
     public class Movie : AuditBase
     {
